@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://s4553711.github.io/"/>
-  <updated>2017-03-17T15:45:24.214Z</updated>
+  <updated>2017-04-11T15:39:07.967Z</updated>
   <id>http://s4553711.github.io/</id>
   
   <author>
@@ -16,11 +16,40 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>First time with Rx.js</title>
+    <link href="http://s4553711.github.io/2017/04/11/First-time-with-Rx-js/"/>
+    <id>http://s4553711.github.io/2017/04/11/First-time-with-Rx-js/</id>
+    <published>2017-04-11T15:15:25.000Z</published>
+    <updated>2017-04-11T15:39:07.967Z</updated>
+    
+    <content type="html"><![CDATA[<p>Basically I will have two buttons, add and stop. Setup 2 sources to receive event from these two buttons so you can see two variables.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> stopClick = Rx.Observable.fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'#stop'</span>), <span class="string">'click'</span>)</div><div class="line"><span class="keyword">var</span> click = Rx.Observable.fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'#add'</span>), <span class="string">'click'</span>)</div></pre></td></tr></table></figure></p>
+<p>Then I use some operators to handle click event from add button and generate new state and pass to render function. Now I have done the behavior of add button.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">click.map(file =&gt; state =&gt; <span class="built_in">Object</span>.assign(&#123;&#125;, state, &#123;</div><div class="line">	file: <span class="string">'file-'</span> + <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">100</span>) + <span class="number">1</span> + <span class="string">'.pdf'</span></div><div class="line">&#125;)).do(_render)</div></pre></td></tr></table></figure></p>
+<p>After rendering new state, the new item shows up in the fileList container. Now I have to add remove event upon it. I use takeUntil to unsubscribe this observable and then use subscribe to activate it.<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Rx.Observable.fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'#remove'</span>), <span class="string">'click'</span>)</div><div class="line">	.map(() =&gt; state =&gt; <span class="built_in">Object</span>.assign(&#123;&#125;, &#123;</div><div class="line">		file: <span class="string">''</span></div><div class="line">	&#125;))</div><div class="line">	.do(_render)</div><div class="line">	.takeUntil(stopClick)</div><div class="line">	.subscribe()</div></pre></td></tr></table></figure></p>
+<p>The overall snippet is as below.<br><iframe scrolling="no" width="100%" height="300" src="http://jsfiddle.net/sw8ag1uk/embedded/html,css,js,result/light" frameborder="0" allowfullscreen></iframe></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://github.com/aaronj1335/frp-mvc-and-other-tlas/blob/master/spaghetti/index.js" target="_blank" rel="external">reactive programming and mvc</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Basically I will have two buttons, add and stop. Setup 2 sources to receive event from these two buttons so you can see two variables.&lt;br
+    
+    </summary>
+    
+    
+      <category term="rx.js" scheme="http://s4553711.github.io/tags/rx-js/"/>
+    
+      <category term="javascript" scheme="http://s4553711.github.io/tags/javascript/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Change theme to Caeper</title>
-    <link href="http://s4553711.github.io/2017/03/17/theme-change/"/>
-    <id>http://s4553711.github.io/2017/03/17/theme-change/</id>
-    <published>2017-03-17T15:45:24.222Z</published>
-    <updated>2017-03-17T15:45:24.214Z</updated>
+    <link href="http://s4553711.github.io/2017/03/18/theme-change/"/>
+    <id>http://s4553711.github.io/2017/03/18/theme-change/</id>
+    <published>2017-03-18T07:12:10.883Z</published>
+    <updated>2017-03-18T07:12:10.855Z</updated>
     
     <content type="html"><![CDATA[<p>I’ve made my decision to write something on this blog. So let’s start from theme changing and finally I decode to use <a href="https://github.com/kywk/hexo-theme-casper" target="_blank" rel="external">Casper</a>!</p>
 ]]></content>
@@ -31,6 +60,10 @@
     
     </summary>
     
+      <category term="personal" scheme="http://s4553711.github.io/categories/personal/"/>
+    
+    
+      <category term="hexo" scheme="http://s4553711.github.io/tags/hexo/"/>
     
   </entry>
   

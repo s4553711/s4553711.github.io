@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>First time with Rx.js | More about bioinformatics</title>
+  <meta name="description" content="" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+  <meta name="generator" content="More about bioinformatics">
+
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+
+  
+</head>
+
+
+<body class="post-template">
+
+  <header class="site-head"  style="background-image: url(//blog.ghost.org/content/images/2013/Nov/cover.png)" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="//www.gravatar.com/avatar/60225df63aeb9e0d7e16298930323a92?s=256" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">More about bioinformatics</h1>
+            <h2 class="blog-description"></h2>
+        </div>
+    </div>
+</header>
+  
+
+<main class="content" role="main">
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2017-04-11T15:15:25.000Z" itemprop="datePublished">
+          2017-04-11
+      </time>
+    
+    
+    | 
+    <a href='/tags/rx-js/'>rx.js</a>,
+    
+    <a href='/tags/javascript/'>javascript</a>
+    
+    
+</span>
+    <h1 class="post-title">First time with Rx.js</h1>
+    <section class="post-content">
+      <p>Basically I will have two buttons, add and stop. Setup 2 sources to receive event from these two buttons so you can see two variables.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> stopClick = Rx.Observable.fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'#stop'</span>), <span class="string">'click'</span>)</div><div class="line"><span class="keyword">var</span> click = Rx.Observable.fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'#add'</span>), <span class="string">'click'</span>)</div></pre></td></tr></table></figure></p>
+<p>Then I use some operators to handle click event from add button and generate new state and pass to render function. Now I have done the behavior of add button.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">click.map(file =&gt; state =&gt; <span class="built_in">Object</span>.assign(&#123;&#125;, state, &#123;</div><div class="line">	file: <span class="string">'file-'</span> + <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">100</span>) + <span class="number">1</span> + <span class="string">'.pdf'</span></div><div class="line">&#125;)).do(_render)</div></pre></td></tr></table></figure></p>
+<p>After rendering new state, the new item shows up in the fileList container. Now I have to add remove event upon it. I use takeUntil to unsubscribe this observable and then use subscribe to activate it.<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Rx.Observable.fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'#remove'</span>), <span class="string">'click'</span>)</div><div class="line">	.map(() =&gt; state =&gt; <span class="built_in">Object</span>.assign(&#123;&#125;, &#123;</div><div class="line">		file: <span class="string">''</span></div><div class="line">	&#125;))</div><div class="line">	.do(_render)</div><div class="line">	.takeUntil(stopClick)</div><div class="line">	.subscribe()</div></pre></td></tr></table></figure></p>
+<p>The overall snippet is as below.<br><iframe scrolling="no" width="100%" height="300" src="http://jsfiddle.net/sw8ag1uk/embedded/html,css,js,result/light" frameborder="0" allowfullscreen></iframe></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://github.com/aaronj1335/frp-mvc-and-other-tlas/blob/master/spaghetti/index.js" target="_blank" rel="external">reactive programming and mvc</a></li>
+</ul>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>Chung-Kuei, Li</h4>
+    <p>A bioinformatics engineer</p>
+</section>
+      <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-twitter" href="http://twitter.com/share?url=http://s4553711.github.io/2017/04/11/First-time-with-Rx-js/"
+       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://s4553711.github.io/2017/04/11/First-time-with-Rx-js/"
+       onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://s4553711.github.io/2017/04/11/First-time-with-Rx-js/"
+       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <span class="page-number">•</span>
+    
+    <a class="older-posts" href="/2017/03/18/theme-change/">
+        Change theme to Caeper →
+    </a>
+    
+</nav>
+  <div id="comment" class="comments-area">
+    <h1 class="title"><a href="#disqus_comments" name="disqus_comments">Comments</a></h1>
+
+    
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+    
+</div>
+</main>
+
+
+  
+<footer class="site-footer">
+  
+  <a class="subscribe icon-feed" href="atom.xml"><span class="tooltip">Subscribe!</span></a>
+  
+  <div class="inner">
+     <section class="copyright">All content copyright <a href="/">More about bioinformatics</a> &copy; 2014 &bull; All rights reserved.</section>
+     <section class="poweredby">Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a></section>
+  </div>
+</footer>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = 's4553711';
+
+    (function(){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+</body>
+</html>
